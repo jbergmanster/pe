@@ -22,18 +22,16 @@ func main() {
 func mul(x int, y []int) []int {
 	var ans []int
 	for offset, digit := range getDigits(x) {
-		for j, c, x := 0, 0, 0; j < len(y) || c != 0; j++ {
+		for j, c := 0, 0; j < len(y) || c != 0; j++ {
+			x := c
 			if j < len(y) {
 				x = y[j]*digit + c
-			} else {
-				x = c
 			}
 			c = x / 10
 			if offset+j < len(ans) {
 				ans[offset+j] += x % 10
 			} else {
 				ans = append(ans, x%10)
-
 			}
 		}
 	}
