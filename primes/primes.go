@@ -1,3 +1,5 @@
+// Package primes provides primitives for working with prime numbers, for 
+// example finding the prime factorization of a number.
 package primes
 
 // Set is a type that encapsulates a set of prime numbers and related methods.
