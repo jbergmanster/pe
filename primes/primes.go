@@ -1,4 +1,4 @@
-// Package primes provides primitives for working with prime numbers, for 
+// Package primes provides primitives for working with prime numbers, for
 // example finding the prime factorization of a number.
 package primes
 
@@ -9,7 +9,7 @@ type Set struct {
 	primes []uint64
 }
 
-// IsPrime tests is a number is prime
+// IsPrime tests if a number is prime
 func (p *Set) IsPrime(x uint64) bool {
 	return !p.set[x]
 }
@@ -76,4 +76,21 @@ func (p *Set) CountDivisors(x uint64) uint {
 		count *= v + 1
 	}
 	return count
+}
+
+// Divisors returns a list of all the divisors for x.
+func (p *Set) Divisors(x uint64) []uint64 {
+	factors := p.Factor(x)
+	divs := []uint64{1}
+	for p, e := range factors {
+		y := uint64(1)
+		for i := uint(0); i < e; i++ {
+			y *= p
+			for _, z := range divs {
+				divs = append(divs, p*z)
+			}
+			divs = append(divs, p)
+		}
+	}
+	return divs
 }
