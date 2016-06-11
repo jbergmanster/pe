@@ -9,6 +9,14 @@ type Set struct {
 	primes []uint64
 }
 
+// CreateSet builds a Set with all the primes less than max.
+func CreateSet(max uint64) Set {
+	s := Set{}
+	s.Sieve(max)
+	s.Order()
+	return s
+}
+
 // IsPrime tests if a number is prime
 func (p *Set) IsPrime(x uint64) bool {
 	return !p.set[x]
@@ -81,16 +89,16 @@ func (p *Set) CountDivisors(x uint64) uint {
 // Divisors returns a list of all the divisors for x.
 func (p *Set) Divisors(x uint64) []uint64 {
 	factors := p.Factor(x)
-	divs := []uint64{1}
+	d := []uint64{1}
 	for p, e := range factors {
 		y := uint64(1)
+		l := len(d)
 		for i := uint(0); i < e; i++ {
 			y *= p
-			for _, z := range divs {
-				divs = append(divs, p*z)
+			for _, z := range d[:l] {
+				d = append(d, y*z)
 			}
-			divs = append(divs, p)
 		}
 	}
-	return divs
+	return d
 }
