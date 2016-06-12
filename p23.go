@@ -16,9 +16,7 @@ func main() {
 		if sumDivisors(s.Divisors(i))-i > i {
 			a = append(a, i)
 			for _, x := range a {
-				if x != i {
-					m[x+i] = true
-				}
+				m[x+i] = true
 			}
 		}
 	}
@@ -32,7 +30,7 @@ func main() {
 }
 
 func sumDivisors(d []uint64) uint64 {
-	sum := 0
+	var sum uint64
 	for _, x := range d {
 		sum += x
 	}
