@@ -57,6 +57,11 @@ func (p *Set) Order() {
 	p.primes = primes
 }
 
+// GetPrime returns the n+1 prime number (zero indexing).
+func (p *Set) GetPrime(idx uint) uint64 {
+	return p.primes[idx]
+}
+
 // Factor returns a map of the prime factors along with their exponents.
 func (p *Set) Factor(x uint64) map[uint64]uint {
 	factors := make(map[uint64]uint)
