@@ -1,15 +1,16 @@
-package mathco
-
 // Package matchco contains various functions for combinatorics.
 //
 // For example it includes functions for generating permutations and
 // combinations.
+package mathco
 
 import (
 	//"fmt"
 	"sort"
 )
 
+// Callback is the type of the callbacks from the various functions that iterate
+// combinations and permutations.
 type Callback func(set []int) bool
 
 // Mulitchoose iterates all the multisets of size k of elements.
@@ -43,7 +44,7 @@ func Multichoose(elements []int, k int, f Callback) {
 
 // LexicographicPermutations implements the algorithm described in
 // https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order.
-// It calls the callback f for each permutation.
+// It calls the Callback f for each permutation.
 func LexicographicPermutations(a sort.IntSlice, f Callback) {
 	sort.Ints(a)
 	f(a)

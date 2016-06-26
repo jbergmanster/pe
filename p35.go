@@ -12,14 +12,14 @@ func main() {
 	var multisets [][]int
 	candidates := make(map[int][]int)
 
-	addMultiset := func(set[] int) bool {
+	addMultiset := func(set []int) bool {
 		s := make([]int, len(set), len(set))
-		copy(s,set)
+		copy(s, set)
 		multisets = append(multisets, s)
 		return true
 	}
 
-	addPrimePermutation := func(set[] int) bool {
+	addPrimePermutation := func(set []int) bool {
 		x := 0
 		for k, j := len(set)-1, 1; k > -1; k, j = k-1, j*10 {
 			x += j * set[k]
@@ -28,7 +28,7 @@ func main() {
 			return true
 		}
 		s := make([]int, len(set), len(set))
-		copy(s,set)
+		copy(s, set)
 		candidates[x] = s
 		return true
 	}
@@ -41,7 +41,7 @@ func main() {
 			for k, j := l-1, 1; k > -1; k, j = k-1, j*10 {
 				x += j * set[(k+i)%l]
 			}
-			candidates[x]=nil
+			candidates[x] = nil
 			if !p.IsPrime(uint64(x)) {
 				return
 			}
@@ -55,10 +55,10 @@ func main() {
 	for i := 2; i < 7; i++ {
 		mathco.Multichoose(e, i, addMultiset)
 	}
-	for _,set := range multisets {
+	for _, set := range multisets {
 		mathco.LexicographicPermutations(set, addPrimePermutation)
 	}
-	for key,_ := range candidates {
+	for key, _ := range candidates {
 		if candidates[key] == nil {
 			continue
 		}
@@ -66,5 +66,3 @@ func main() {
 	}
 	fmt.Println(ans)
 }
-
-
