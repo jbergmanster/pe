@@ -2,67 +2,64 @@ package main
 
 import (
 	"fmt"
-	"github.com/jbergmanster/pe/mathco"
 	"github.com/jbergmanster/pe/primes"
 )
 
 func main() {
 	ans := 4 // 2,3,5,7 are the one digit primes
 	p := primes.CreateSet(1000000)
-	var multisets [][]int
-	candidates := make(map[int][]int)
-
-	addMultiset := func(set []int) bool {
-		s := make([]int, len(set), len(set))
-		copy(s, set)
-		multisets = append(multisets, s)
-		return true
-	}
-
-	addPrimePermutation := func(set []int) bool {
-		x := 0
-		for k, j := len(set)-1, 1; k > -1; k, j = k-1, j*10 {
-			x += j * set[k]
-		}
-		if !p.IsPrime(uint64(x)) {
-			return true
-		}
-		s := make([]int, len(set), len(set))
-		copy(s, set)
-		candidates[x] = s
-		return true
-	}
+	visited := make(map[int]bool)
 
 	checkRotations := func(set []int) {
 		m := make(map[int]bool)
 		l := len(set)
+		allPrime := true
 		for i := 0; i < l; i++ {
 			x := 0
 			for k, j := l-1, 1; k > -1; k, j = k-1, j*10 {
 				x += j * set[(k+i)%l]
 			}
-			candidates[x] = nil
-			if !p.IsPrime(uint64(x)) {
+			if visited[x] {
 				return
+			}
+			if !p.IsPrime(uint64(x)) {
+				allPrime = false
 			}
 			m[x] = true
 		}
-		ans += len(m)
+		if allPrime {
+			ans += len(m)
+		}
+		for k := range m {
+			visited[k]=true
+		}
 	}
 
 	// Circular primes can only be made up of the following digits
-	e := []int{1, 3, 7, 9}
-	for i := 2; i < 7; i++ {
-		mathco.Multichoose(e, i, addMultiset)
-	}
-	for _, set := range multisets {
-		mathco.LexicographicPermutations(set, addPrimePermutation)
-	}
-	for key, _ := range candidates {
-		if candidates[key] == nil {
-			continue
+	a := []int{1, 3, 7, 9}
+	// Digit indexes array
+	b := [6]int{0, 0, 0, 0, 0, 0}
+	// Digits array
+	c := [6]int{0, 0, 0, 0, 1, 1}
+	last := [6]int{3, 3, 3, 3, 3, 3}
+	blen := len(b)
+	numdigits := 2
+	for {
+		checkRotations(c[blen-numdigits:])
+		if b == last {
+			break
 		}
-		checkRotations(candidates[key])
+		for i := 1; i <= numdigits && numdigits <= blen; i++ {
+			idx := blen - i
+			b[idx] = (b[idx] + 1) % 4
+			c[idx] = a[b[idx]]
+			if b[idx] != 0 {
+				break
+			}
+			if i == numdigits && b[idx] == 0 {
+				numdigits++
+			}
+		}
 	}
 	fmt.Println(ans)
 }
