@@ -1,0 +1,45 @@
+Here are some of my thoughts on the problem.
+
+The shape of the triangle with a given area does not affect the possible partitions.
+
+With this we can create instances of right triagnes.
+
+SPOILER - Below is my solution sketch. It is a bit messy because it uses explicit coordiantes.
+
+
+
+
+
+Algorithm for a triangle of area Z.
+Create a right triange with area Z as so.
+
+Vertex A at the origin, (0,0)
+Vertex B at (0,Z)
+Vertex C at (2,0)
+
+Since AB and AC are perpendicular .5 * 2 * Z = Z ( the area of the triangle)  
+
+Add a point D starting at (0,1) to form the line CD and splitting the ABC triange into two triangles ACD and BCD.
+
+I will move this point D up the Y axis to (0,z-1) to try all possible partitions of ACD and BCD. Those are the integer partions because BC is 2 so area =  
+1/2 BC * AD = AD.
+
+Next add a fifth point E on the X-axis between AC. And draw another line from C to E.
+
+There is a sixth point F at the intersection of BD and CE
+If both ABE and BDF are integral areas then it is a valid partition, meaning all the blocks four regions are integral.
+
+
+To choose all the points E to consider work backwards from the area of ABE.
+
+The area is just !/2 AB * AE or AE =  2 * area / AB
+
+We have chosen E such that ABE is integral area. To get the area of BDF, we just need to find the x coordinate of the point F  by solving for the intersection of BF and CE.
+
+With that the area of BDF is 1/2 * BD * x-coordinate of F. If this integral than it is a valid partion.
+
+For a given triange area we need to iterate D from 1 to area - 1 up the y axis and E such that the area of ABE goes from  1 to area - 1.
+
+So the algorithm is n^2 for a specific area to find all partitions.
+
+So the overall solution is n^3
